@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, {useState} from "react";
+import styled from "styled-components";
+import "./App.css";
 
 const center: string = 'display: flex; justify-content: center; align-items: center;';
 
@@ -22,8 +23,25 @@ const HwaMeon = styled.div`
   background: #646cff;
   position: absolute;
   top: 2rem;
+`;
+
+const GyelGwa = styled.div`
   color: white;
-  font-size: 18px;
+  font-size: 40px;
+  font-family: 'Digital Dismay';
+`;
+
+const Del = styled.button`
+  ${center};
+  width: 40px;
+  height: 20px;
+  padding: 0;
+  background: #646cff;
+  border: 2px solid black;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: black;
 `;
 
 const YeepLiuck = styled.div`
@@ -73,19 +91,36 @@ let btsNaeYong=[['C'],['()'],['%'],['/','X','-','+','=']];
     }
   }
 
-let bts = new Array(4);                //bts[[5],[5],[5],[5]] 또는 bts[4][5]
-  for (let i = 0; i < 4; i++) {
-      bts[i] = new Array(5);
-      for (let k = 0; k < 5; k++){
-        bts[i][k]=btsNaeYong[i][k];
-      }
+const bts: string[][] = new Array(4);                //bts[[5],[5],[5],[5]] 또는 bts[4][5]
+for (let i = 0; i < 4; i++) {
+    bts[i] = new Array(5);
+    for (let k = 0; k < 5; k++){
+      bts[i][k] = btsNaeYong[i][k];
+    }
+}
+
+function HwaMeonChulLiuck() {
+  const [hyeonJaeGab, setHyeonJaeGab] = useState();
+
+  const plus = () => {
+    setHyeonJaeGab();
   }
+}
+
+function GyeGwaGab() {
+  const [giulGwaGab, setGiulGwaGab] = useState();
+}
 
 const App: React.FC = () => {
   return (
     <BonChae> 
       <HwaMeon>
-        결과랑 계산 알고리즘은 <br/> 화요일 회의 전까지 구현하겠습니다..!
+        <GyelGwa>
+          25
+        </GyelGwa>
+        <Del>
+          del
+        </Del>
       </HwaMeon>
       <YeepLiuck>{bts.map((bt)=>(               //template literal에서 글자 배열로 나타내는 거 이용해서 특정 버튼만 색깔 바꿔보기
         <JungAngJungLiuel>{bt.map((b: string)=>(

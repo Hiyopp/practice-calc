@@ -32,6 +32,13 @@
   }
 }
 
+@font-face {
+  font-family: 'Digital Dismay';
+  src: url('./digital_font/Digital-Dismay.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .card {
   padding: 2em;
 }
