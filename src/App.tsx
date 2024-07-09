@@ -70,28 +70,34 @@ const JungAngJungLiuel = styled.div`
   margin: 3%;
 `;
 
-let btsNaeYong=[['C'],['()'],['%'],['/','X','-','+','=']];
+type btsType = {
+  id: number;
+  value: string;
+}
+
+let btsNaeYong: btsType[][]=[[{id: 1, value: 'C'}],[{id: 6, value: '()'}],[{id: 11, value: '%'}],
+[{id: 16, value: '/'},{id: 17, value: 'X'},{id: 18, value: '-'},{id: 19, value: '+'},{id: 20, value: '='}]];
   for (let i = 0; i < 3; i++){
     for (let k = 1; k < 5; k++){
       if(k===4) {
         switch(i) {
           case 0:
-            btsNaeYong[i][k]='+/-';
+            btsNaeYong[i][k]={id: 5*(i+1), value: '+/-'};
             break;
           case 1:
-            btsNaeYong[i][k]='0';
+            btsNaeYong[i][k]={id: 5*(i+2), value: '0'};
             break;
           case 2:
-            btsNaeYong[i][k]='.';
+            btsNaeYong[i][k]={id: 5*(i+3), value: '.'};
             break;
         }
       }
-      else btsNaeYong[i][k]=String((i+7)-(k-1)*3);
+      else btsNaeYong[i][k]={id: (k+1)+i*5, value: String((i+7)-(k-1)*3)};
 
     }
   }
 
-const bts: string[][] = new Array(4);                //bts[[5],[5],[5],[5]] 또는 bts[4][5]
+const bts: btsType[][] = new Array(4);                //bts[[5],[5],[5],[5]] 또는 bts[4][5]
 for (let i = 0; i < 4; i++) {
     bts[i] = new Array(5);
     for (let k = 0; k < 5; k++){
@@ -99,32 +105,36 @@ for (let i = 0; i < 4; i++) {
     }
 }
 
-function HwaMeonChulLiuck() {
-  const [hyeonJaeGab, setHyeonJaeGab] = useState();
-
-  const plus = () => {
-    setHyeonJaeGab();
-  }
-}
-
-function GyeGwaGab() {
-  const [giulGwaGab, setGiulGwaGab] = useState();
-}
-
 const App: React.FC = () => {
+
+  const [hyeonJaeGab, setHyeonJaeGab] = useState<string[]>([]);
+
+  function Click(b: string) {
+    hyeonJaeGab[9] ? setHyeonJaeGab(hyeonJaeGab.filter(st => st !== '9')) :  //여기도 위 배열처럼 id로 설정
+    hyeonJaeGab[0] ? setHyeonJaeGab([...hyeonJaeGab,b]) : setHyeonJaeGab([b]);
+  }
+
+  function GyeGwaGab() {
+    const [giulGwaGab, setGiulGwaGab] = useState();
+
+    const plus = () => {
+    }
+
+  }
+
   return (
     <BonChae> 
-      <HwaMeon>
-        <GyelGwa>
-          25
-        </GyelGwa>
+      <HwaMeon>{hyeonJaeGab.map((hJG) => (   //key id로 바꾸기
+        <GyelGwa key={hJG}>
+          {hJG}
+        </GyelGwa>))}
         <Del>
           del
         </Del>
       </HwaMeon>
-      <YeepLiuck>{bts.map((bt)=>(               //template literal에서 글자 배열로 나타내는 거 이용해서 특정 버튼만 색깔 바꿔보기
-        <JungAngJungLiuel>{bt.map((b: string)=>(
-          <CalcBt>{b}</CalcBt>))}
+      <YeepLiuck>{bts.map((bt)=>(
+        <JungAngJungLiuel key={bt[0].id}>{bt.map((b)=>(
+          <CalcBt key={b.id} onClick={() => {Click(b.value)}}>{b.value}</CalcBt>))}
         </JungAngJungLiuel>))}
       </YeepLiuck>
     </BonChae>
