@@ -1,5 +1,3 @@
-import "./App.css";
-
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
@@ -78,58 +76,63 @@ const JungAngJungLiuel = styled.div`
 type btsType = {
   id: number;
   value: string;
+  type: valueType;
 };
 
-const bts: btsType[][] = [
-  [
-    { id: 1, value: "C" },
-    { id: 2, value: "7" },
-    { id: 3, value: "4" },
-    { id: 4, value: "1" },
-    { id: 5, value: "+/-" },
-  ],
-  [
-    { id: 6, value: "()" },
-    { id: 7, value: "8" },
-    { id: 8, value: "5" },
-    { id: 9, value: "2" },
-    { id: 10, value: "0" },
-  ],
-  [
-    { id: 11, value: "%" },
-    { id: 12, value: "9" },
-    { id: 13, value: "6" },
-    { id: 14, value: "3" },
-    { id: 15, value: "." },
-  ],
-  [
-    { id: 16, value: "/" },
-    { id: 17, value: "X" },
-    { id: 18, value: "-" },
-    { id: 19, value: "+" },
-    { id: 20, value: "=" },
-  ],
-] as const;
-
-let count = 1;
-
-let distinguishValue: number;
-
-function Distinguish() {
-  if (distinguishValue === 1)
-    distinguishValue = 1; //내용 <-여기서 숫자와 글자 나눠야 함.
-  else distinguishValue = 1; //내용 수정
+enum valueType {
+  refresh,
+  number,
+  operation,
+  equal,
 }
 
-const App = () => {
+function App() {
+  const bts: btsType[][] = [
+    [
+      { id: 1, value: "C", type: valueType.refresh },
+      { id: 2, value: "7", type: valueType.number },
+      { id: 3, value: "4", type: valueType.number },
+      { id: 4, value: "1", type: valueType.number },
+      { id: 5, value: "+/-", type: valueType.operation },
+    ],
+    [
+      { id: 6, value: "()", type: valueType.operation },
+      { id: 7, value: "8", type: valueType.number },
+      { id: 8, value: "5", type: valueType.number },
+      { id: 9, value: "2", type: valueType.number },
+      { id: 10, value: "0", type: valueType.number },
+    ],
+    [
+      { id: 11, value: "%", type: valueType.operation },
+      { id: 12, value: "9", type: valueType.number },
+      { id: 13, value: "6", type: valueType.number },
+      { id: 14, value: "3", type: valueType.number },
+      { id: 15, value: ".", type: valueType.operation },
+    ],
+    [
+      { id: 16, value: "/", type: valueType.operation },
+      { id: 17, value: "X", type: valueType.operation },
+      { id: 18, value: "-", type: valueType.operation },
+      { id: 19, value: "+", type: valueType.operation },
+      { id: 20, value: "=", type: valueType.equal },
+    ],
+  ] as const;
+
+  let distinguishValue: number;
+
   const [hyeonJaeGab, setHyeonJaeGab] = useState<btsType[]>([]);
 
   if (hyeonJaeGab[13])
     setHyeonJaeGab(hyeonJaeGab.filter((st) => st.id !== hyeonJaeGab[0].id));
 
-  function Click(i: number, b: string) {
-    setHyeonJaeGab([...hyeonJaeGab, { id: count, value: b }]); //useState의 set은 함수가 끝나면 설정된다.
-    count++;
+  function Distinguish() {
+    if (distinguishValue === 1)
+      distinguishValue = 1; //내용 <-여기서 숫자와 글자 나눠야 함.
+    else distinguishValue = 1; //내용 수정
+  }
+
+  function Click(i: number, b: string, t: valueType) {
+    setHyeonJaeGab([...hyeonJaeGab, { id: i, value: b, type: t }]); //useState의 set은 함수가 끝나면 설정된다.
     distinguishValue = i;
   }
 
@@ -142,23 +145,19 @@ const App = () => {
   return (
     <BonChae>
       <HwaMeon>
-        {hyeonJaeGab.map(
-          (
-            hJG, //key id로 바꾸기
-          ) => (
-            <GyelGwa key={hJG.id}>{hJG.value}</GyelGwa>
-          ),
-        )}
+        {hyeonJaeGab.map((hJG) => (
+          <GyelGwa key={hJG.id}>{hJG.value}</GyelGwa>
+        ))}
         <Del>del</Del>
       </HwaMeon>
       <YeepLiuck>
-        {bts.map((bt) => (
-          <JungAngJungLiuel key={bt[0].id}>
+        {bts.map((bt, index) => (
+          <JungAngJungLiuel key={index}>
             {bt.map((b) => (
               <CalcBt
                 key={b.id}
                 onClick={() => {
-                  Click(b.id, b.value);
+                  Click(b.id, b.value, b.type);
                 }}
               >
                 {b.value}
@@ -169,6 +168,6 @@ const App = () => {
       </YeepLiuck>
     </BonChae>
   );
-};
+}
 
 export default App;
