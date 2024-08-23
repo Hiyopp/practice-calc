@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { center } from "src/App.const";
 import { bts, btsType, valueType } from "src/App.const";
 import styled from "styled-components";
@@ -36,10 +36,19 @@ export function InputValue({
   hyeonJaeGab: btsType[];
   setHyeonJaeGab: Dispatch<SetStateAction<btsType[]>>;
 }) {
+  const [numberValue, setNumberValue] = useState<number[]>([]);
+
   function click(i: number, b: string, t: valueType) {
+    if (t === valueType.number) {
+      setNumberValue([...numberValue, Number(b)]);
+    }
     if (hyeonJaeGab.length > 13) hyeonJaeGab.shift();
     setHyeonJaeGab([...hyeonJaeGab, { id: i, value: b, type: t }]); //useState의 set은 함수가 끝나면 설정된다.
   }
+
+  let test = 0;
+  numberValue.map((num, index) => (test += num * (numberValue.length - index)));
+  console.log(test);
 
   return (
     <YeepLiuck>
